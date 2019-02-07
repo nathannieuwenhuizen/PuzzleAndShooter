@@ -11,6 +11,10 @@ public class Weapon : MonoBehaviour {
 	private int maxAmmo;
 	private int ammo;
 
+	[SerializeField]
+	private float projectileSpeed = 100f;
+	private float ShootOffsetPos = 3f;
+
 	// Use this for initialization
 	void Start () {
 		ammo = maxAmmo;
@@ -25,7 +29,7 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 	void Shoot() {
-		GameObject bullet = PoolManager.instance.ReuseObject(projectile, transform.position + transform.forward * 4, Quaternion.identity);
+		GameObject bullet = PoolManager.instance.ReuseObject(projectile, transform.position + transform.forward * ShootOffsetPos, Quaternion.identity);
 		bullet.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 		
@@ -35,7 +39,7 @@ public class Weapon : MonoBehaviour {
 		// distance.x -= val;
 		// distance.z -= val;
 		// bullet.transform.position = distance;
-		bullet.GetComponent<Rigidbody>().AddForce((bullet.transform.position - transform.position) * 100);
+		bullet.GetComponent<Rigidbody>().AddForce((bullet.transform.position - transform.position) * projectileSpeed);
 
 	}
 }
