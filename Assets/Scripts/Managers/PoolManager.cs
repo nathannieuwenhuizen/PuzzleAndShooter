@@ -54,6 +54,9 @@ public class PoolManager : MonoBehaviour {
 			gameObject = objectInstance;
 			transform = gameObject.transform;
 			gameObject.SetActive(false);
+			if (gameObject.GetComponent<PoolObject>()) {
+				poolObjectScript = gameObject.GetComponent<PoolObject>();
+			}
 		}
 		public void Reuse(Vector3 pos, Quaternion rot) {
 			if (gameObject.GetComponent<PoolObject>()) {

@@ -13,12 +13,18 @@ public class Weapon : MonoBehaviour {
 
 	[SerializeField]
 	private float projectileSpeed = 100f;
+
+	[SerializeField]
+	private AudioClip shootSound;
 	private float ShootOffsetPos = 3f;
 
-	// Use this for initialization
+	private AudioSource audioSource;
+
+
 	void Start () {
 		ammo = maxAmmo;
 		PoolManager.instance.CreatePool(projectile, 5);
+		audioSource = GetComponent<AudioSource>();
 		
 	}
 	
@@ -29,6 +35,10 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 	void Shoot() {
+
+		audioSource.clip = shootSound;
+		audioSource.Play();
+
 		GameObject bullet = PoolManager.instance.ReuseObject(projectile, transform.position + transform.forward * ShootOffsetPos, Quaternion.identity);
 		bullet.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
