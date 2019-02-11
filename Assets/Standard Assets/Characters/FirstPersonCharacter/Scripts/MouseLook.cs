@@ -28,18 +28,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        public void LookRotation(Transform character, Transform camera, int controllerID = 0)
+        public void LookRotation(Transform character, Transform camera, float yRot, float xRot)
         {
-                // if ( Mathf.Abs(CrossPlatformInputManager.GetAxis("Mouse X")) < Mathf.Abs(CrossPlatformInputManager.GetAxis("Vertical_r" + controllerID)) ) {
-                    float yRot = CrossPlatformInputManager.GetAxis("Vertical_r" + controllerID) * XSensitivity;
-                // }
-                // if ( Mathf.Abs(CrossPlatformInputManager.GetAxis("Mouse Y")) < Mathf.Abs(CrossPlatformInputManager.GetAxis("Horizontal_r" + controllerID)) ) {
-                    float xRot = CrossPlatformInputManager.GetAxis("Horizontal_r" + controllerID) * -YSensitivity;            
-                // }
-            // Debug.Log(yRot + " | " + xRot);
+            // float yRot = CrossPlatformInputManager.GetAxis("Vertical_r" + controllerID) * XSensitivity;
+            // float xRot = CrossPlatformInputManager.GetAxis("Horizontal_r" + controllerID) * -YSensitivity;            
 
-            m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
-            m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
+            m_CharacterTargetRot *= Quaternion.Euler (0f, yRot * XSensitivity, 0f);
+            m_CameraTargetRot *= Quaternion.Euler (xRot * YSensitivity, 0f, 0f);
 
             if(clampVerticalRotation)
                 m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);

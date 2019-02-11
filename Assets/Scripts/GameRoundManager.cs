@@ -30,8 +30,8 @@ public class GameRoundManager : MonoBehaviour {
 	}
 	public void newRound() {
 
-		cube.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-		cube.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		cube.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, - 1f + Random.value * 2f, 0);
+		cube.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(Random.value * 10f, Random.value * 10f, Random.value * 10f);
 		// playerTransforms[0].position = new Vector3(0,0, -9);
 		// playerTransforms[1].position = new Vector3(0,0, 9);
 		cube.position = Vector3.zero;

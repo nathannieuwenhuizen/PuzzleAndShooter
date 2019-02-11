@@ -106,9 +106,11 @@
      <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
      <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
      <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+     <Compile Include="Assets\Scripts\AIController.cs" />
      <Compile Include="Assets\Scripts\GameRoundManager.cs" />
      <Compile Include="Assets\Scripts\Managers\PoolManager.cs" />
      <Compile Include="Assets\Scripts\PlayCube.cs" />
+     <Compile Include="Assets\Scripts\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\PoolObject.cs" />
      <Compile Include="Assets\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scripts\Rotating_BG.cs" />
