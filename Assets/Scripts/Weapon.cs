@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Weapon
+{
 public class Weapon : MonoBehaviour {
 
 	[SerializeField]
@@ -16,21 +18,38 @@ public class Weapon : MonoBehaviour {
 
 	[SerializeField]
 	private AudioClip shootSound;
-	private float ShootOffsetPos = 3f;
-
+	private float ShootOffsetPos = 1.5f;
+	[SerializeField] private UnityStandardAssets.Characters.FirstPerson.FirstPersonController character;
 	private AudioSource audioSource;
 
 
 	void Start () {
 		ammo = maxAmmo;
-		PoolManager.instance.CreatePool(projectile, 5);
+		PoolManager.instance.CreatePool(projectile, 50);
 		audioSource = GetComponent<AudioSource>();
-		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown("l")) {
+
+		bool j_input = false;
+		switch (character.controllerID)
+		{
+			case 0:
+				j_input = Input.GetButtonDown("Fire0");
+			break;
+			case 1:
+				j_input = Input.GetKeyDown(KeyCode.Joystick1Button7);
+			break;
+			case 2:
+				j_input = Input.GetKeyDown(KeyCode.Joystick2Button7);
+			break;
+			default:
+				j_input = Input.GetButtonDown("Fire0");
+			break;
+		}
+
+		if (j_input) {
 			Shoot();
 		}
 	}
@@ -52,4 +71,5 @@ public class Weapon : MonoBehaviour {
 		bullet.GetComponent<Rigidbody>().AddForce((bullet.transform.position - transform.position) * projectileSpeed);
 
 	}
+}
 }

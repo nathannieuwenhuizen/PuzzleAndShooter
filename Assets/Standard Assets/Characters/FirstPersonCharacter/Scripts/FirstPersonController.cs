@@ -28,7 +28,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
-        private Camera m_Camera;
+        [SerializeField] private int playerID = 1;
+        [SerializeField] public int controllerID = 0;
+
+
+        [SerializeField]private Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
         private Vector2 m_Input;
@@ -45,8 +49,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            CheckController();
+
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
@@ -57,6 +62,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			m_MouseLook.Init(transform , m_Camera.transform);
         }
 
+        public void CheckController() {
+         string[] names = Input.GetJoystickNames();
+         for (int x = 0; x < names.Length; x++)
+         {
+
+             if (names[x].Length == 19)
+             {
+                 Debug.Log("PS4 CONTROLLER IS CONNECTED");
+                //  controllerID = playerID;
+             }
+             if (names[x].Length == 33)
+             {
+                //  print("XBOX ONE CONTROLLER IS CONNECTED");
+             }
+         }
+        }
 
         // Update is called once per frame
         private void Update()
@@ -65,7 +86,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                bool j_input = false;
+                switch (controllerID)
+                {
+                    case 0:
+                        j_input = CrossPlatformInputManager.GetButtonDown("Jump0");
+                    break;
+                    case 1:
+                        j_input = Input.GetKeyDown(KeyCode.Joystick1Button1);
+                    break;
+                    case 2:
+                        j_input = Input.GetKeyDown(KeyCode.Joystick2Button1);
+                    break;
+                    default:
+                        j_input = CrossPlatformInputManager.GetButtonDown("Jump0");
+                    break;
+                }
+                m_Jump = j_input;
+
+                // m_Jump = CrossPlatformInputManager.GetButtonDown("Jump" + controllerID);
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -204,8 +243,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void GetInput(out float speed)
         {
             // Read input
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
+            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal_l" + controllerID);
+            float vertical = CrossPlatformInputManager.GetAxis("Vertical_l" + controllerID);
 
             bool waswalking = m_IsWalking;
 
@@ -236,7 +275,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+            m_MouseLook.LookRotation (transform, m_Camera.transform, controllerID);
         }
 
 
