@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour {
 		character = GetComponent<FirstPersonController>();
 		weapon = GetComponentInChildren<Weapon>();
 
-		CheckController();
+		// CheckController();
 	}
 	
 	// Update is called once per frame
@@ -42,13 +42,34 @@ public class PlayerInput : MonoBehaviour {
 				s_input = Input.GetKeyDown(KeyCode.Joystick2Button7);
 			break;
 			default:
-				// j_input = Input.GetButtonDown("Fire0");
+				s_input = Input.GetButtonDown("Fire0");
 			break;
 		}
 
 		if (s_input) {
+			weapon.HoldingToShoot();
+		}
+
+		switch (controllerID)
+		{
+			case 0:
+				s_input = Input.GetButtonUp("Fire0");
+			break;
+			case 1:
+				s_input = Input.GetKeyUp(KeyCode.Joystick1Button7);
+			break;
+			case 2:
+				s_input = Input.GetKeyUp(KeyCode.Joystick2Button7);
+			break;
+			default:
+				s_input = Input.GetButtonDown("Fire0");
+			break;
+		}
+		if (s_input) {
 			weapon.Shoot();
 		}
+
+
 	}
 
 	private void InputJump() {

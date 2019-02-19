@@ -37,12 +37,38 @@ public class AIController : MonoBehaviour {
 	void Update () {
 		InputJump();
 		InputShoot();
+		Aim();
 		InputMovement();
 	}
 
 	private void InputMovement() {
-		dist = target.position - weapon.gameObject.transform.localPosition - transform.position;
+		//move -------------------------------------------------------------------------------------
+		float cRotX =  transform.localRotation.eulerAngles.y;
+		Debug.Log("angle = " + cRotX);
+		Vector2 distanceIWant = new Vector2(
+			target.position.x - transform.position.x,
+			target.position.z - transform.position.z + (GoalZHiger ? wantedAimDistance : - wantedAimDistance)
+		);
+		if (Mathf.Abs(distanceIWant.x) > detectionDistances.x) {
+			speed.x = Mathf.Clamp(distanceIWant.x  / 1000f * moveSpeed, -1f, 1f)  * (GoalZHiger ? -1 : 1);
+		} else {
+			speed.x = 0;
+		}
 		
+		if (Mathf.Abs(distanceIWant.y) > detectionDistances.z) {
+			speed.y = Mathf.Clamp(distanceIWant.y  / 1000f * moveSpeed, -1f, 1f) * (GoalZHiger ? -1 : 1);
+		} else {
+			speed.y = 0;
+		}
+		
+		Debug.Log(speed);
+		character.MoveSpeed = speed;
+		//move -------------------------------------------------------------------------------------
+
+	}
+
+	private void Aim() {
+		dist = target.position - weapon.gameObject.transform.localPosition - transform.position;
 		//Aim rotation to target -----------------------------------------------------------------------
 		float angle = Mathf.Rad2Deg * Mathf.Atan2(dist.x, dist.z);
 		float cRotX =  transform.localRotation.eulerAngles.y;
@@ -86,24 +112,6 @@ public class AIController : MonoBehaviour {
 
 		character.RotateView(rotation.y, rotation.x);
 		// end aim ---------------------------------------------------------------------------------
-
-		
-		//move -------------------------------------------------------------------------------------
-		float distx = target.position.x - transform.position.x;
-		if (Mathf.Abs(distx) > detectionDistances.x) {
-			speed.x = Mathf.Clamp(distx  / 1000f * moveSpeed, -1f, 1f)  * (GoalZHiger ? -1 : 1);
-		} else {
-			speed.x = 0;
-		}
-		float disty = target.position.z - transform.position.z + (GoalZHiger ? wantedAimDistance : - wantedAimDistance);
-		if (Mathf.Abs(disty) > detectionDistances.z) {
-			speed.y = Mathf.Clamp(disty  / 1000f * moveSpeed, -1f, 1f) * (GoalZHiger ? -1 : 1);
-		} else {
-			speed.y = 0;
-		}
-		Debug.Log(speed);
-		character.MoveSpeed = speed;
-		//move -------------------------------------------------------------------------------------
 
 	}
 
