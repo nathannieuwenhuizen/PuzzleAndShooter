@@ -6,8 +6,9 @@ using UnityStandardAssets.CrossPlatformInput;
 public class AIController : MonoBehaviour {
 
 	[SerializeField] private Transform goalPos;
-	private bool GoalZHiger = false;
 	[SerializeField] private Transform target;
+
+	[SerializeField] private Vector3 positionFromTarget;
 
 	private FirstPersonController character;
 	private Weapon weapon;
@@ -22,7 +23,6 @@ public class AIController : MonoBehaviour {
 	[SerializeField] private float moveSpeed = 10f;
 	[SerializeField] private Vector3 detectionDistances = new Vector3(3f, 2f, 2f);
 	[SerializeField] private Vector2 detectionAngle = new Vector2(1f, 1f);
-	[SerializeField] private float wantedAimDistance = 5f;
 	// Use this for initialization
 	void Start () {
 		character = GetComponent<FirstPersonController>();
@@ -30,7 +30,6 @@ public class AIController : MonoBehaviour {
 
 		speed = new Vector2(0f,0f);
 		rotation = new Vector2(0f,0f);
-		GoalZHiger = transform.position.z < goalPos.position.z;
 	}
 	
 	// Update is called once per frame
@@ -38,30 +37,31 @@ public class AIController : MonoBehaviour {
 		InputJump();
 		InputShoot();
 		Aim();
-		InputMovement();
+		InputMovement(); 
 	}
 
 	private void InputMovement() {
 		//move -------------------------------------------------------------------------------------
-		float cRotX =  transform.localRotation.eulerAngles.y;
-		Debug.Log("angle = " + cRotX);
-		Vector2 distanceIWant = new Vector2(
-			target.position.x - transform.position.x,
-			target.position.z - transform.position.z + (GoalZHiger ? wantedAimDistance : - wantedAimDistance)
-		);
-		if (Mathf.Abs(distanceIWant.x) > detectionDistances.x) {
-			speed.x = Mathf.Clamp(distanceIWant.x  / 1000f * moveSpeed, -1f, 1f)  * (GoalZHiger ? -1 : 1);
-		} else {
+		Vector3 positionIWant = target.position;
+		positionIWant.x += positionFromTarget.x;
+		positionIWant.z += positionFromTarget.z;
+
+		Vector3 myRelativeDistance = transform.InverseTransformDirection(positionIWant - transform.position );
+
+		if (Mathf.Abs(myRelativeDistance.x) > detectionDistances.x) {
+			speed.x = Mathf.Clamp(myRelativeDistance.x  / 1000f * moveSpeed, -1f, 1f);
+		} else { 
 			speed.x = 0;
 		}
 		
-		if (Mathf.Abs(distanceIWant.y) > detectionDistances.z) {
-			speed.y = Mathf.Clamp(distanceIWant.y  / 1000f * moveSpeed, -1f, 1f) * (GoalZHiger ? -1 : 1);
+		if (Mathf.Abs(myRelativeDistance.z) > detectionDistances.z) {
+			speed.y = Mathf.Clamp(myRelativeDistance.z  / 1000f * moveSpeed, -1f, 1f);
 		} else {
 			speed.y = 0;
 		}
-		
-		Debug.Log(speed);
+
+		Debug.Log("inverse = "+ myRelativeDistance );
+		Debug.Log("speed = " + speed);
 		character.MoveSpeed = speed;
 		//move -------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ public class AIController : MonoBehaviour {
 		//Aim rotation to target -----------------------------------------------------------------------
 		float angle = Mathf.Rad2Deg * Mathf.Atan2(dist.x, dist.z);
 		float cRotX =  transform.localRotation.eulerAngles.y;
-		if (!GoalZHiger) {
+		if (goalPos.position.z > transform.position.z) {
 			if (cRotX > 180) {
 				cRotX = -(360 - cRotX);
 			}
@@ -132,10 +132,17 @@ public class AIController : MonoBehaviour {
 		}
 	}
 	private bool inPositionToShoot() {
-		if (dist.z * (GoalZHiger ? -1 : 1) > 0) {
+		//if other side of goal
+
+		float myDistToGoal = Vector3.Distance(goalPos.position, transform.position);
+		float targetDistToGoal = Vector3.Distance(goalPos.position, target.position);
+		if (myDistToGoal < targetDistToGoal) {
+			//if aim is correctly.
 			if (Mathf.Abs(rotation.x) < .1f &&  Mathf.Abs(rotation.y) < .1f) {
 				return true;
-			} else if (speed.y * (GoalZHiger ? -1 : 1) < 0) {
+			}
+			//else check if player goes back even though its aim isn't correct 
+			else if (speed.y < 0) {
 				return true;
 			}
 		}
