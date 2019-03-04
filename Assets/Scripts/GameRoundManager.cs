@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 public class GameRoundManager : MonoBehaviour {
 
 	[SerializeField] Text[] scores;
@@ -10,21 +11,62 @@ public class GameRoundManager : MonoBehaviour {
 	[SerializeField] private Transform[] playerTransforms;
 	[SerializeField] private Transform cube;
 	[SerializeField] private int endScore = 5;
+
+    private
 	// Use this for initialization
 	void Start () {
 		for (int i = 0 ; i < scores.Length; i++) {
 			score_values.Add(0);
 			scores[i].text = score_values[i] + "";
 		}
+        SetupCharacters();
 	}
-	public void ScoreIncrease(int index) {
+
+
+    private void SetupCharacters()
+    {
+
+        for (int i = 0; i < GameSettings.matchCharacters.Count; i++)
+        {
+            Debug.Log("does it work?" + i);
+            playerTransforms[i].GetComponent<FirstPersonController>().m_Camera.enabled = true;
+
+            if (sharedScreen())
+            {
+                playerTransforms[i].GetComponent<FirstPersonController>().m_Camera.rect = new Rect((i == 0 ? .5f : 0), 0, .5f, 1);
+            } else
+            {
+                playerTransforms[i].GetComponent<FirstPersonController>().m_Camera.rect = new Rect(0, 0, 1, 1);
+                if (GameSettings.matchCharacters[i].AI)
+                {
+                    playerTransforms[i].GetComponent<FirstPersonController>().m_Camera.enabled = false;
+                }
+            }
+
+            playerTransforms[i].GetComponent<AIController>().enabled = GameSettings.matchCharacters[i].AI;
+            playerTransforms[i].GetComponent<PlayerInput>().enabled = !GameSettings.matchCharacters[i].AI;
+
+            playerTransforms[i].GetComponent<PlayerInput>().controllerID = GameSettings.matchCharacters[i].controlledBy;
+
+        }
+    }
+    private bool sharedScreen()
+    {
+        if (GameSettings.matchCharacters[0].AI == GameSettings.matchCharacters[1].AI)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void ScoreIncrease(int index) {
 
 		score_values[index] += 1;
 		scores[index].text = score_values[index] + "";	
 		if (score_values[index] >= endScore) {
 			Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-			return;
+            SceneManager.LoadScene("Menu");
+            return;
 		}
 		newRound();
 	}

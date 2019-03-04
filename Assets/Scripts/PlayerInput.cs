@@ -5,7 +5,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityStandardAssets.CrossPlatformInput;
 public class PlayerInput : MonoBehaviour {
 
-	[SerializeField] private int controllerID;
+	[SerializeField] public int controllerID;
 	
 	private FirstPersonController character;
 	private Weapon weapon;

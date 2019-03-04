@@ -72,7 +72,7 @@ public class AIController : MonoBehaviour {
 		//Aim rotation to target -----------------------------------------------------------------------
 		float angle = Mathf.Rad2Deg * Mathf.Atan2(dist.x, dist.z);
 		float cRotX =  transform.localRotation.eulerAngles.y;
-		if (goalPos.position.z > transform.position.z) {
+		if (goalPos.position.z < transform.position.z) {
 			if (cRotX > 180) {
 				cRotX = -(360 - cRotX);
 			}
