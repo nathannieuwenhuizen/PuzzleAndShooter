@@ -125,6 +125,9 @@
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Rotating_BG.cs" />
     <Compile Include="Assets\Scripts\UI\CharacterUISetting.cs" />
+    <Compile Include="Assets\Scripts\UI\FadeScreen.cs" />
+    <Compile Include="Assets\Scripts\UI\FollowTarget.cs" />
+    <Compile Include="Assets\Scripts\UI\Rotate.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <None Include="Assets\PostProcessing\Resources\Shaders\DepthOfField.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\MotionBlur.cginc" />

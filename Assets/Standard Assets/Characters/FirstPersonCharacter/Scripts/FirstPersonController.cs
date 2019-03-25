@@ -47,6 +47,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector2 moveSpeed;
         private AudioSource m_AudioSource;
 
+        public bool paused = false;
+
         // Use this for initialization
         private void Start()
         {
@@ -65,6 +67,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            if (paused) { return; }
+
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
@@ -91,6 +95,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+            if (paused) { return; }
+
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at

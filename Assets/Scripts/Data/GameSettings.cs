@@ -6,6 +6,7 @@ public static class GameSettings
 {
     public static List<MyCharacterInfo> matchCharacters;
     public static int goalScore = 5;
+    public static bool paused = false;
 }
 public class MyCharacterInfo
 {

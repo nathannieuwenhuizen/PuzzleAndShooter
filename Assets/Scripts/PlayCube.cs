@@ -11,13 +11,16 @@ public class PlayCube : MonoBehaviour {
 	private AudioSource audioSource;
 
 	[SerializeField] private GameObject manager;
+
+    public bool canScore = true;
 	public void Start() {
 		audioSource = GetComponent<AudioSource>();
 	}
 	public void OnCollisionEnter(Collision col) {
 
-		if (col.gameObject.tag == "Goal") {
+		if (col.gameObject.tag == "Goal" && canScore) {
 			audioSource.clip = goalSound;
+            canScore = false;
 			Debug.Log("goal!");
 			if (transform.position.z > 0) {
                  manager.GetComponent<GameRoundManager>().ScoreIncrease(1);
@@ -28,7 +31,9 @@ public class PlayCube : MonoBehaviour {
 		} else {
 			audioSource.clip = bounceSound;
 		}
-		if (!audioSource.isPlaying) {
+
+        //plays hit sound
+        if (!audioSource.isPlaying) {
 			audioSource.Play();
 		}
 	}

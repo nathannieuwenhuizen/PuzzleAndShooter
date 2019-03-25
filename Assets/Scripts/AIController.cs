@@ -23,8 +23,11 @@ public class AIController : MonoBehaviour {
 	[SerializeField] private float moveSpeed = 10f;
 	[SerializeField] private Vector3 detectionDistances = new Vector3(3f, 2f, 2f);
 	[SerializeField] private Vector2 detectionAngle = new Vector2(1f, 1f);
-	// Use this for initialization
-	void Start () {
+
+    public bool paused = false;
+
+    // Use this for initialization
+    void Start () {
 		character = GetComponent<FirstPersonController>();
 		weapon = GetComponentInChildren<Weapon>();
 
@@ -34,7 +37,9 @@ public class AIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		InputJump();
+        if (paused) { return; }
+
+        InputJump();
 		InputShoot();
 		Aim();
 		InputMovement(); 
@@ -60,8 +65,6 @@ public class AIController : MonoBehaviour {
 			speed.y = 0;
 		}
 
-		Debug.Log("inverse = "+ myRelativeDistance );
-		Debug.Log("speed = " + speed);
 		character.MoveSpeed = speed;
 		//move -------------------------------------------------------------------------------------
 
@@ -125,7 +128,7 @@ public class AIController : MonoBehaviour {
 	IEnumerator Shooting() {
 		weapon.Shoot();
 		yield return new WaitForSeconds(Random.value * 1f);
-		if (inPositionToShoot()) {
+		if (inPositionToShoot() && !paused) {
 			StartCoroutine(Shooting());
 		} else {
 			shooting = false;

@@ -9,8 +9,10 @@ public class PlayerInput : MonoBehaviour {
 	
 	private FirstPersonController character;
 	private Weapon weapon;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    public bool paused = false;
+    public bool cameraEnable = true;
+    void Start () {
 		character = GetComponent<FirstPersonController>();
 		weapon = GetComponentInChildren<Weapon>();
 
@@ -19,14 +21,19 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		InputJump();
+        InputMovement();
+
+        if (paused) { return; }
+
+        InputJump();
 		InputShoot();
-		InputMovement();
 	}
 
 	private void InputMovement() {
-		character.RotateView(CrossPlatformInputManager.GetAxis("Vertical_r" + controllerID), CrossPlatformInputManager.GetAxis("Horizontal_r" + controllerID));
-		character.MoveSpeed = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal_l" + controllerID), CrossPlatformInputManager.GetAxis("Vertical_l" + controllerID));
+        if (!cameraEnable) { return; }
+        character.RotateView(CrossPlatformInputManager.GetAxis("Vertical_r" + controllerID), CrossPlatformInputManager.GetAxis("Horizontal_r" + controllerID));
+        if (paused) { return; }
+        character.MoveSpeed = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal_l" + controllerID), CrossPlatformInputManager.GetAxis("Vertical_l" + controllerID));
 	}
 	private void InputShoot() {
 		bool s_input = false;
