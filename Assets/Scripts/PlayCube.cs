@@ -8,7 +8,9 @@ public class PlayCube : MonoBehaviour {
 	private AudioClip bounceSound;
 	[SerializeField]
 	private AudioClip goalSound;
-	private AudioSource audioSource;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private AudioSource explosionSound;
+    private AudioSource audioSource;
 
 	[SerializeField] private GameObject manager;
 
@@ -21,6 +23,12 @@ public class PlayCube : MonoBehaviour {
 		if (col.gameObject.tag == "Goal" && canScore) {
 			audioSource.clip = goalSound;
             canScore = false;
+
+            explosion.transform.position = transform.position;
+            explosion.GetComponent<ParticleSystem>().Play();
+            explosionSound.Play();
+
+            gameObject.SetActive(false);
 			Debug.Log("goal!");
 			if (transform.position.z > 0) {
                  manager.GetComponent<GameRoundManager>().ScoreIncrease(1);

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour {
 
-	[SerializeField]
-	private GameObject projectile;
-	
-	[SerializeField]
+	[SerializeField] private GameObject projectile;
+	[SerializeField] private GameObject explosion;
+
+    [SerializeField]
 	private int maxAmmo;
 	private int ammo;
 
@@ -30,8 +30,9 @@ public class Weapon : MonoBehaviour {
 
 	void Start () {
 		ammo = maxAmmo;
-		PoolManager.instance.CreatePool(projectile, 50);
-		audioSource = GetComponent<AudioSource>();
+        PoolManager.instance.CreatePool(projectile, 50);
+        PoolManager.instance.CreatePool(explosion, 20);
+        audioSource = GetComponent<AudioSource>();
 		camera = GetComponent<Camera>();
 	}
 	

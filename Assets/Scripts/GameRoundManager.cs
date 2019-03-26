@@ -134,10 +134,17 @@ public class GameRoundManager : MonoBehaviour {
         scores[index].text = score_values[index] + "";
         playerScoreText.enabled = true;
         playerScoreText.text = "player " + (index + 1) + " scored!";
-        Time.timeScale = 0.5f;
-        yield return new WaitForSeconds(.5f);
-        transitionScreen.FadeTo(1, .2f);
-        yield return new WaitForSeconds(.25f);
+        Time.timeScale = 0.1f;
+        yield return new WaitForSeconds(.05f);
+        while (Time.timeScale < 1)
+        {
+            Time.timeScale += 0.1f;
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield return new WaitForSeconds(1f);
+        transitionScreen.FadeTo(1, .5f);
+        yield return new WaitForSeconds(.55f);
         playerScoreText.enabled = false;
         Time.timeScale = 1f;
         if (score_values[index] >= endScore)
@@ -152,16 +159,20 @@ public class GameRoundManager : MonoBehaviour {
     }
     public void CountDown()
     {
-        Debug.Log("fade out!");
         transitionScreen.FadeTo(0, .2f);
         GetComponent<AudioSource>().Play();
 
         DisableCharacters(true, true);
         countDownText.gameObject.SetActive(true);
         StartCoroutine( CountDowning(3));
+        Outline outline = countDownText.gameObject.GetComponent<Outline>();
+        StartCoroutine(CountDownAnimation(outline));
     }
     private IEnumerator CountDowning(int sec)
     {
+        Outline outline = countDownText.gameObject.GetComponent<Outline>();
+        outline.effectDistance = new Vector2(4.5f, 0f);
+
         countDownText.text = sec.ToString();
         yield return new WaitForSeconds(1f);
         sec--;
@@ -173,6 +184,14 @@ public class GameRoundManager : MonoBehaviour {
         {
             countDownText.gameObject.SetActive(false);
             DisableCharacters(false);
+        }
+    }
+    private IEnumerator CountDownAnimation(Outline outline)
+    {
+        while (outline.gameObject.active)
+        {
+            outline.effectDistance = new Vector2(outline.effectDistance.x + 0.5f, outline.effectDistance.y);
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -216,6 +235,7 @@ public class GameRoundManager : MonoBehaviour {
         cube.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, -1f + Random.value * 2f, 0);
         cube.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(Random.value * 10f, Random.value * 10f, Random.value * 10f);
         cube.GetComponent<PlayCube>().canScore = true;
+        cube.gameObject.SetActive(true);
         playerTransforms[0].position = new Vector3(0, 0, -9);
         playerTransforms[1].position = new Vector3(0, 0, 9);
         cube.position = Vector3.zero;

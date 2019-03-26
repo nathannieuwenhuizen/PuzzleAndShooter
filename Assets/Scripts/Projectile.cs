@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Projectile : PoolObject {
 
-	public override void OnObjectReuse() {
-		Debug.Log("Reuse");
-	}
-	public void OnCollisionEnter(Collision col) {
-		this.Destroy();
+    [SerializeField] private GameObject explosionObject;
+    private void Start()
+    {
+    }
+
+    public override void OnObjectReuse()
+    {
+    }
+
+    public void OnCollisionEnter(Collision col) {
+        GameObject explosion = PoolManager.instance.ReuseObject(explosionObject, transform.position, Quaternion.identity);
+
+        this.Destroy();
 	}
 }
