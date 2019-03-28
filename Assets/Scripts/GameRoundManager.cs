@@ -37,7 +37,7 @@ public class GameRoundManager : MonoBehaviour {
         //SetupCharacters();
 
         Pause(false); //sadly needs to happen
-        CountDown();
+        newRound();
 	}
 
     private void Update()
