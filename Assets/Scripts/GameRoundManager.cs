@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 public class GameRoundManager : MonoBehaviour {
 
+    [SerializeField] private bool demo = false;
+
 	public List<int> score_values;//had to be private, but collision bug of playcube happened.
 	[SerializeField] private Transform[] playerTransforms;
 
@@ -34,7 +36,7 @@ public class GameRoundManager : MonoBehaviour {
 			score_values.Add(0);
 			scores[i].text = score_values[i] + "";
 		}
-        //SetupCharacters();
+        SetupCharacters();
 
         Pause(false); //sadly needs to happen
         newRound();
@@ -147,7 +149,7 @@ public class GameRoundManager : MonoBehaviour {
         yield return new WaitForSeconds(.55f);
         playerScoreText.enabled = false;
         Time.timeScale = 1f;
-        if (score_values[index] >= endScore)
+        if (score_values[index] == endScore)
         {
             ActivateWinScreen(index);
             //GoBackToMenu();
@@ -217,10 +219,12 @@ public class GameRoundManager : MonoBehaviour {
 
     public void GoBackToMenu()
     {
+        Time.timeScale =  1f;
         SceneManager.LoadScene("Menu");
     }
     public void ReloadScene()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Game");
     }
     public void newRound() {
