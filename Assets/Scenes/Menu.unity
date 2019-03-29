@@ -335,22 +335,22 @@ PrefabInstance:
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -169
+      value: -184
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -61
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -460.1
+      value: -529.7
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -313.7
+      value: -367.5
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
@@ -1199,22 +1199,22 @@ PrefabInstance:
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 159.7
+      value: 194.8
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -61
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -460.1
+      value: -530.3
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -313.7
+      value: -367.5
       objectReference: {fileID: 0}
     - target: {fileID: 3235524199991790387, guid: 7ed260e13b90fc14ca94d24e54ce803e,
         type: 3}
@@ -1738,7 +1738,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}

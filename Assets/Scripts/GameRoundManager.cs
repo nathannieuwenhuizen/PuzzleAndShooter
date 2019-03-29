@@ -75,7 +75,7 @@ public class GameRoundManager : MonoBehaviour {
     private void SetupCharacters()
     {
 
-        for (int i = 0; i < GameSettings.matchCharacters.Count; i++)
+        for (int i = 0; i < playerTransforms.Length; i++)
         {
             Debug.Log("does it work?" + i);
             playerTransforms[i].GetComponent<FirstPersonController>().m_Camera.enabled = true;

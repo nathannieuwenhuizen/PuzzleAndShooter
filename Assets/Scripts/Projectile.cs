@@ -15,7 +15,11 @@ public class Projectile : PoolObject {
 
     public void OnCollisionEnter(Collision col) {
         GameObject explosion = PoolManager.instance.ReuseObject(explosionObject, transform.position, Quaternion.identity);
-
+        if (col.gameObject.tag == "cube")
+        {
+            Vector3 dist = col.transform.position - transform.position;
+            col.gameObject.GetComponent<Rigidbody>().velocity = (dist * 10);
+        }
         this.Destroy();
 	}
 }
